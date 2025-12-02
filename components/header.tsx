@@ -63,9 +63,7 @@ export default function Header() {
 
           {/* CTA Button */}
           <a
-            href="https://sihps-25152-mvp-or4u.vercel.app/register"
-            target="_blank"
-            rel="noopener"
+            href="/signup"
             className="px-6 py-2 rounded-full font-medium transition-all hover:shadow-lg"
             style={{
               backgroundColor: "rgb(255, 174, 0)",

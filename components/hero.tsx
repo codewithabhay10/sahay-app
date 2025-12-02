@@ -146,9 +146,7 @@ export default function Hero() {
 
         {/* CTA Button */}
         <a
-          href="https://sihps-25152-mvp-or4u.vercel.app/register"
-          target="_blank"
-          rel="noopener"
+          href="/signup"
           className={`inline-block px-8 py-3 font-medium transition-all hover:shadow-lg hover:scale-105 duration-700 ${animateElements ? "opacity-100 delay-500" : "opacity-0"}`}
           style={{
             border: "3px solid rgb(255, 255, 255)",

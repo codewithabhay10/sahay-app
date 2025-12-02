@@ -6,16 +6,18 @@ interface StatItem {
   value: string;
   label: string;
   unit: string;
+  targetValue: number;
 }
 
 const stats: StatItem[] = [
-  { value: "3", label: "Faster Onboarding", unit: "x" },
-  { value: "99", label: "Data availability", unit: "%" },
-  { value: "24", label: "Access anywhere", unit: "h" },
+  { value: "3", label: "Faster Onboarding", unit: "x", targetValue: 3 },
+  { value: "99", label: "Data availability", unit: "%", targetValue: 99 },
+  { value: "24", label: "Access anywhere", unit: "h", targetValue: 24 },
 ];
 
 export default function Stats() {
   const [animateElements, setAnimateElements] = useState(false);
+  const [animatedValues, setAnimatedValues] = useState<number[]>([0, 0, 0]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -32,6 +34,39 @@ export default function Stats() {
 
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!animateElements) return;
+
+    const duration = 2000; // 2 seconds
+    const steps = 60;
+    const interval = duration / steps;
+
+    stats.forEach((stat, index) => {
+      let currentStep = 0;
+      const timer = setInterval(() => {
+        currentStep++;
+        const progress = currentStep / steps;
+        const easedProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+        const newValue = Math.floor(easedProgress * stat.targetValue);
+
+        setAnimatedValues((prev) => {
+          const newValues = [...prev];
+          newValues[index] = newValue;
+          return newValues;
+        });
+
+        if (currentStep >= steps) {
+          clearInterval(timer);
+          setAnimatedValues((prev) => {
+            const newValues = [...prev];
+            newValues[index] = stat.targetValue;
+            return newValues;
+          });
+        }
+      }, interval);
+    });
+  }, [animateElements]);
 
   return (
     <section id="stats" className="py-24 px-6 relative">
@@ -203,7 +238,7 @@ export default function Stats() {
                       color: "rgb(15, 15, 15)",
                     }}
                   >
-                    {stat.value}
+                    {animatedValues[i]}
                   </span>
                   <p
                     style={{
