@@ -1,10 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Geist } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
-
-const _geist = Geist({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Sahay - Access Government Welfare Schemes Effortlessly",
@@ -37,6 +34,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className={`font-sans antialiased`}>
         {children}
         <Analytics />

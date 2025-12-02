@@ -11,6 +11,20 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 w-full h-full">
+        <img
+          decoding="auto"
+          width="1280"
+          height="831"
+          sizes="100vw"
+          srcSet="https://framerusercontent.com/images/8RXP9ras3Ou98vMlCD4tGy3nJDE.png?scale-down-to=512&width=1280&height=831 512w,https://framerusercontent.com/images/8RXP9ras3Ou98vMlCD4tGy3nJDE.png?scale-down-to=1024&width=1280&height=831 1024w,https://framerusercontent.com/images/8RXP9ras3Ou98vMlCD4tGy3nJDE.png?width=1280&height=831 1280w"
+          src="https://framerusercontent.com/images/8RXP9ras3Ou98vMlCD4tGy3nJDE.png?width=1280&height=831"
+          alt="background"
+          className="w-full h-full object-cover object-center"
+        />
+      </div>
+
       {/* Decorative fan element */}
       <div className="absolute left-0 top-1/4 w-96 h-96 opacity-40 animate-float">
         <svg viewBox="0 0 200 200" className="w-full h-full">
@@ -34,12 +48,15 @@ export default function Hero() {
 
         {/* Main Heading */}
         <h1
-          className={`text-5xl md:text-6xl font-bold leading-tight transition-all duration-700 ${animateElements ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`font-medium text-center transition-all duration-700 ${animateElements ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          style={{
+            fontSize: "52px",
+            fontWeight: 500,
+            lineHeight: "120%",
+            color: "rgb(94, 64, 0)",
+          }}
         >
-          <span style={{ color: "#2C3E50" }}>Access Government </span>
-          <span style={{ color: "#FDB714" }}>Welfare Schemes</span>
-          <br />
-          <span style={{ color: "#2C3E50" }}>Effortlessly</span>
+          Access Government <span style={{ color: "rgb(255, 174, 0)" }}>Welfare Schemes</span> Effortlessly
         </h1>
 
         {/* Description */}
