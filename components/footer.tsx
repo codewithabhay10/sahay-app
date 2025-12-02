@@ -2,97 +2,145 @@
 
 export default function Footer() {
   return (
-    <footer className="bg-white/60 backdrop-blur py-12 px-6 border-t" style={{ borderColor: "#E5E7EB" }}>
-      <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-4 gap-8 mb-12">
-          {/* Company Info */}
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg" style={{ backgroundColor: "#4169E1" }}></div>
-              <span className="font-bold" style={{ color: "#2C3E50" }}>
-                Sahay
-              </span>
+    <footer className="py-12 px-6" style={{ width: "100%", opacity: 1 }}>
+      <div className="max-w-7xl mx-auto" style={{ opacity: 1 }}>
+        <div
+          className="rounded-[40px] p-12"
+          style={{
+            border: "1px solid rgb(237, 239, 243)",
+            backgroundColor: "rgb(255, 255, 255)",
+            opacity: 1,
+          }}
+        >
+          <div className="flex flex-col lg:flex-row gap-12" style={{ opacity: 1 }}>
+            {/* Logo and Description */}
+            <div className="flex-1 space-y-4" style={{ opacity: 1 }}>
+              <a href="./" className="inline-block" style={{ borderRadius: "10px", opacity: 1 }}>
+                <div style={{ borderRadius: "10px", opacity: 1 }}>
+                  <img
+                    src="https://framerusercontent.com/images/vTOb6B02y0BqN1vVhaRu2HxvB0.png?width=488&height=172"
+                    alt="logo"
+                    className="h-12 w-auto object-cover"
+                  />
+                </div>
+              </a>
+              <p className="text-sm" style={{ color: "rgb(38, 60, 72)", opacity: 1 }}>
+                A unified portal for citizens, organizations, and administrators to manage documents, verify
+                identities, and apply for welfare schemes securely
+              </p>
             </div>
-            <p className="text-sm" style={{ color: "#4A4A4A" }}>
-              Our comprehensive platform is designed to empower your organization by simplifying complex processes,
-              fostering seamless collaboration.
-            </p>
-          </div>
 
-          {/* Quick Links */}
-          <div className="space-y-3">
-            <h4 className="font-bold" style={{ color: "#2C3E50" }}>
-              Pages
-            </h4>
-            <ul className="space-y-2 text-sm" style={{ color: "#4A4A4A" }}>
-              <li>
-                <a href="#" className="hover:text-orange-500">
-                  Features
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-orange-500">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-orange-500">
-                  Pricing
-                </a>
-              </li>
-            </ul>
-          </div>
+            {/* Menu Sections */}
+            <div className="flex flex-col sm:flex-row gap-12" style={{ opacity: 1 }}>
+              {/* Pages */}
+              <div className="space-y-4" style={{ opacity: 1 }}>
+                <h4
+                  className="font-semibold"
+                  style={{ color: "rgb(38, 60, 72)", opacity: 1 }}
+                >
+                  Pages
+                </h4>
+                <div className="space-y-2" style={{ opacity: 1 }}>
+                  <a
+                    href="./#features"
+                    className="block text-sm hover:text-orange-500 transition-colors"
+                    style={{
+                      color: "rgb(38, 60, 72)",
+                      backgroundColor: "rgba(0, 0, 0, 0)",
+                      borderRadius: "99px",
+                      opacity: 1,
+                    }}
+                  >
+                    Features
+                  </a>
+                  <a
+                    href="./"
+                    className="block text-sm hover:text-orange-500 transition-colors"
+                    style={{
+                      color: "rgb(38, 60, 72)",
+                      backgroundColor: "rgba(0, 0, 0, 0)",
+                      borderRadius: "99px",
+                      opacity: 1,
+                    }}
+                  >
+                    Pricing
+                  </a>
+                </div>
+              </div>
 
-          <div className="space-y-3">
-            <h4 className="font-bold" style={{ color: "#2C3E50" }}>
-              Resources
-            </h4>
-            <ul className="space-y-2 text-sm" style={{ color: "#4A4A4A" }}>
-              <li>
-                <a href="#" className="hover:text-orange-500">
+              {/* Resources */}
+              <div className="space-y-4" style={{ opacity: 1 }}>
+                <h4
+                  className="font-semibold"
+                  style={{ color: "rgb(38, 60, 72)", opacity: 1 }}
+                >
                   Resources
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-orange-500">
-                  Contact
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-orange-500">
-                  404
-                </a>
-              </li>
-            </ul>
-          </div>
+                </h4>
+                <div className="space-y-2" style={{ opacity: 1 }}>
+                  <a
+                    href="./"
+                    className="block text-sm hover:text-orange-500 transition-colors"
+                    style={{
+                      color: "rgb(38, 60, 72)",
+                      backgroundColor: "rgba(0, 0, 0, 0)",
+                      borderRadius: "99px",
+                      opacity: 1,
+                    }}
+                  >
+                    Blog
+                  </a>
+                  <a
+                    href="./contact"
+                    className="block text-sm hover:text-orange-500 transition-colors"
+                    style={{
+                      color: "rgb(38, 60, 72)",
+                      backgroundColor: "rgba(0, 0, 0, 0)",
+                      borderRadius: "99px",
+                      opacity: 1,
+                    }}
+                  >
+                    Contact
+                  </a>
+                </div>
+              </div>
 
-          <div className="space-y-3">
-            <h4 className="font-bold" style={{ color: "#2C3E50" }}>
-              Utility Pages
-            </h4>
-            <ul className="space-y-2 text-sm" style={{ color: "#4A4A4A" }}>
-              <li>
-                <a href="#" className="hover:text-orange-500">
+              {/* Utility Pages */}
+              <div className="space-y-4" style={{ opacity: 1 }}>
+                <h4
+                  className="font-semibold"
+                  style={{ color: "rgb(38, 60, 72)", opacity: 1 }}
+                >
                   Utility Pages
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-orange-500">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-orange-500">
-                  404
-                </a>
-              </li>
-            </ul>
+                </h4>
+                <div className="space-y-2" style={{ opacity: 1 }}>
+                  <a
+                    href="./privacy-policy"
+                    className="block text-sm hover:text-orange-500 transition-colors"
+                    style={{
+                      color: "rgb(38, 60, 72)",
+                      backgroundColor: "rgba(0, 0, 0, 0)",
+                      borderRadius: "99px",
+                      opacity: 1,
+                    }}
+                  >
+                    Privacy Policy
+                  </a>
+                  <a
+                    href="./404"
+                    className="block text-sm hover:text-orange-500 transition-colors"
+                    style={{
+                      color: "rgb(38, 60, 72)",
+                      backgroundColor: "rgba(0, 0, 0, 0)",
+                      borderRadius: "99px",
+                      opacity: 1,
+                    }}
+                  >
+                    404
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-
-        {/* Copyright */}
-        <div className="pt-8 border-t text-center text-sm" style={{ borderColor: "#E5E7EB", color: "#4A4A4A" }}>
-          <p>© 2025 Sahay. All rights reserved.</p>
         </div>
       </div>
     </footer>

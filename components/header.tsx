@@ -3,36 +3,79 @@
 export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <nav className="mx-auto max-w-7xl px-6 py-6">
-        <div className="flex items-center justify-between rounded-full bg-white/80 backdrop-blur px-8 py-4 shadow-sm">
+      <nav className="mx-auto max-w-5xl px-6 py-6">
+        <div
+          className="flex items-center justify-between px-8 py-4"
+          style={{
+            backdropFilter: "blur(10px)",
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            borderRadius: "99px",
+            border: "3px solid rgb(255, 255, 255)",
+          }}
+        >
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg" style={{ backgroundColor: "#4169E1" }}></div>
-            <span className="font-bold text-lg" style={{ color: "#2C3E50" }}>
-              Sahay
-            </span>
+          <div className="flex items-center">
+            <a href="./" className="block" style={{ borderRadius: "10px" }}>
+              <div style={{ borderRadius: "10px" }}>
+                <img
+                  decoding="auto"
+                  width="488"
+                  height="172"
+                  src="https://framerusercontent.com/images/vTOb6B02y0BqN1vVhaRu2HxvB0.png?width=488&height=172"
+                  alt="Sahay logo"
+                  className="h-10 w-auto object-cover"
+                  style={{ borderRadius: "10px" }}
+                />
+              </div>
+            </a>
           </div>
 
           {/* Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#stats" className="text-sm" style={{ color: "#4A4A4A" }}>
-              Stats
+          <nav className="hidden md:flex items-center gap-2" style={{ borderRadius: "99px" }}>
+            <a
+              href="./#stats"
+              className="px-6 py-2 rounded-full transition-all group"
+              style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
+            >
+              <p className="text-sm font-medium transition-colors group-hover:text-white" style={{ color: "rgb(94, 64, 0)" }}>
+                Stats
+              </p>
             </a>
-            <a href="#features" className="text-sm" style={{ color: "#4A4A4A" }}>
-              Features
+            <a
+              href="./#features"
+              className="px-6 py-2 rounded-full transition-all group"
+              style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
+            >
+              <p className="text-sm font-medium transition-colors group-hover:text-white" style={{ color: "rgb(94, 64, 0)" }}>
+                Features
+              </p>
             </a>
-            <a href="#faq" className="text-sm" style={{ color: "#4A4A4A" }}>
-              Faq
+            <a
+              href="./#faq"
+              className="px-6 py-2 rounded-full transition-all group"
+              style={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
+            >
+              <p className="text-sm font-medium transition-colors group-hover:text-white" style={{ color: "rgb(94, 64, 0)" }}>
+                Faq
+              </p>
             </a>
-          </div>
+          </nav>
 
           {/* CTA Button */}
-          <button
-            className="px-6 py-2 rounded-full font-medium text-white transition-all hover:shadow-lg"
-            style={{ backgroundColor: "#FDB714" }}
+          <a
+            href="https://sihps-25152-mvp-or4u.vercel.app/register"
+            target="_blank"
+            rel="noopener"
+            className="px-6 py-2 rounded-full font-medium transition-all hover:shadow-lg"
+            style={{
+              backgroundColor: "rgb(255, 174, 0)",
+              border: "3px solid rgb(255, 255, 255)",
+              borderRadius: "99px",
+              color: "rgb(94, 64, 0)",
+            }}
           >
             Get Started
-          </button>
+          </a>
         </div>
       </nav>
     </header>

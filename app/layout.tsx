@@ -2,6 +2,12 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
+import { Onest } from "next/font/google";
+
+const onest = Onest({ 
+  subsets: ["latin"], 
+  variable: "--font-onest" 
+})
 
 export const metadata: Metadata = {
   title: "Sahay - Access Government Welfare Schemes Effortlessly",
@@ -40,7 +46,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={`font-sans antialiased`}>
+      <body className={`${onest.variable} antialiased`}>
         {children}
         <Analytics />
       </body>

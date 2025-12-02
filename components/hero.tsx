@@ -37,13 +37,35 @@ export default function Hero() {
       <div className="relative z-10 max-w-3xl mx-auto px-6 text-center space-y-8">
         {/* Badge */}
         <div
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur transition-all duration-700 ${animateElements ? "opacity-100" : "opacity-0"}`}
+          className={`inline-flex transition-all duration-700 ${animateElements ? "opacity-100" : "opacity-0"}`}
         >
-          <span className="text-xl">⚡</span>
-          <span className="text-sm font-medium" style={{ color: "#4A4A4A" }}>
-            Most Efficient
-          </span>
-          <span className="text-xl">⚡</span>
+          <div
+            className="flex items-center gap-3 px-6 py-3"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              borderRadius: "99px",
+            }}
+          >
+            <div
+              style={{
+                width: "12px",
+                height: "12px",
+                background: "radial-gradient(50% 50%, rgb(255, 162, 0) 0%, rgba(255, 162, 0, 0.69) 100%)",
+                borderRadius: "1000px",
+              }}
+            />
+            <p className="text-sm font-medium" style={{ color: "rgb(94, 64, 0)" }}>
+              Most Efficient
+            </p>
+            <div
+              style={{
+                width: "12px",
+                height: "12px",
+                background: "radial-gradient(50% 50%, rgb(255, 162, 0) 0%, rgba(255, 162, 0, 0.69) 100%)",
+                borderRadius: "1000px",
+              }}
+            />
+          </div>
         </div>
 
         {/* Main Heading */}
@@ -68,33 +90,90 @@ export default function Hero() {
           apply for welfare schemes securely.
         </p>
 
-        {/* Features List */}
+        {/* Scrolling Features List */}
         <div
-          className={`flex flex-wrap justify-center gap-4 md:gap-6 transition-all duration-700 delay-300 ${animateElements ? "opacity-100" : "opacity-0"}`}
+          className={`w-full transition-all duration-700 delay-300 ${animateElements ? "opacity-100" : "opacity-0"}`}
+          style={{
+            maskImage:
+              "linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 12.5%, rgb(0, 0, 0) 87.5%, rgba(0, 0, 0, 0) 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 12.5%, rgb(0, 0, 0) 87.5%, rgba(0, 0, 0, 0) 100%)",
+            overflow: "hidden",
+          }}
         >
-          {["Unified Documents", "Secure Verification", "Fast Applications"].map((feature, i) => (
-            <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/40 backdrop-blur">
-              <span
-                className="w-5 h-5 rounded-full flex items-center justify-center text-white font-bold"
-                style={{ backgroundColor: "#6366F1" }}
+          <div
+            className="flex gap-3 py-2 animate-infinite-scroll"
+            style={{
+              width: "max-content",
+            }}
+          >
+            {/* Duplicate badges for seamless loop */}
+            {[
+              "Unified Documents",
+              "Secure Verification",
+              "Fast Applications",
+              "Transparent Tracking",
+              "Unified Documents",
+              "Secure Verification",
+              "Fast Applications",
+              "Transparent Tracking",
+            ].map((feature, i) => (
+              <div
+                key={i}
+                className="shrink-0"
+                style={{
+                  border: "3px solid rgb(252, 252, 252)",
+                  backgroundColor: "rgba(250, 239, 212, 0.7)",
+                  borderRadius: "99px",
+                  padding: "0.5rem 1.25rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
               >
-                ✓
-              </span>
-              <span className="text-sm font-medium" style={{ color: "#4A4A4A" }}>
-                {feature}
-              </span>
-            </div>
-          ))}
+                <img
+                  src="https://framerusercontent.com/images/y87bxwvdfZajlEkVtkWXRdMs.svg?width=1024&height=1024"
+                  alt=""
+                  className="w-5 h-5"
+                />
+                <p className="text-sm font-medium whitespace-nowrap" style={{ color: "rgb(94, 64, 0)" }}>
+                  {feature}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* CTA Button */}
-        <button
-          className={`px-8 py-3 rounded-full font-bold text-white transition-all hover:shadow-lg hover:scale-105 duration-700 ${animateElements ? "opacity-100 delay-500" : "opacity-0"}`}
-          style={{ backgroundColor: "#FDB714" }}
+        <a
+          href="https://sihps-25152-mvp-or4u.vercel.app/register"
+          target="_blank"
+          rel="noopener"
+          className={`inline-block px-8 py-3 font-medium transition-all hover:shadow-lg hover:scale-105 duration-700 ${animateElements ? "opacity-100 delay-500" : "opacity-0"}`}
+          style={{
+            border: "3px solid rgb(255, 255, 255)",
+            backgroundColor: "rgb(255, 174, 0)",
+            borderRadius: "99px",
+            color: "rgb(94, 64, 0)",
+          }}
         >
           Get Started
-        </button>
+        </a>
       </div>
+
+      <style jsx>{`
+        @keyframes infinite-scroll {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-infinite-scroll {
+          animation: infinite-scroll 20s linear infinite;
+        }
+      `}</style>
     </section>
   )
 }

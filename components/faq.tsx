@@ -3,10 +3,26 @@
 import { useState, useEffect } from "react"
 
 const faqs = [
-  { question: "What will I learn?", answer: "You will learn comprehensive skills..." },
-  { question: "Do I need coding experience?", answer: "No prior experience required..." },
-  { question: "Do I get a certificate?", answer: "Yes, you will receive a certificate..." },
-  { question: "Are the courses self-paced?", answer: "Yes, all courses are self-paced..." },
+  {
+    question: "What will I learn ?",
+    answer:
+      "You'll learn how to navigate government welfare schemes, verify your identity securely, and access benefits efficiently through our Digital Beneficiary Identification System.",
+  },
+  {
+    question: "Do I need coding experience ?",
+    answer:
+      "No coding experience is required. Our platform is designed to be user-friendly for all citizens, regardless of technical background.",
+  },
+  {
+    question: "Do I get a certificate ?",
+    answer:
+      "Once verified, you receive a digital certificate of identification that can be used across all government welfare programs.",
+  },
+  {
+    question: "Are the courses self-paced ?",
+    answer:
+      "The application process is entirely self-paced. You can complete your profile and verification steps at your own convenience, 24/7.",
+  },
 ]
 
 export default function FAQ() {
@@ -14,13 +30,16 @@ export default function FAQ() {
   const [animateElements, setAnimateElements] = useState(false)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setAnimateElements(true)
-      }
-    })
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAnimateElements(true)
+        }
+      },
+      { threshold: 0.2 }
+    )
 
-    const section = document.getElementById("faq-section")
+    const section = document.getElementById("faq")
     if (section) observer.observe(section)
 
     return () => observer.disconnect()
@@ -28,67 +47,150 @@ export default function FAQ() {
 
   return (
     <section id="faq" className="py-24 px-6 relative">
-      <div className="max-w-3xl mx-auto">
-        {/* Section Header */}
+      <div className="max-w-7xl mx-auto">
+        {/* Background Container */}
         <div
-          id="faq-section"
-          className={`text-center space-y-4 mb-16 transition-all duration-700 ${animateElements ? "opacity-100" : "opacity-0"}`}
+          className="relative rounded-3xl overflow-hidden p-12"
+          style={{
+            backgroundImage:
+              "url(https://framerusercontent.com/images/gDTSJhM46wbHL90G2IUodOW4uuY.png?width=1988&height=1446)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur">
-            <span>❓</span>
-            <span className="text-sm font-medium" style={{ color: "#4A4A4A" }}>
-              Faq's
-            </span>
-            <span>❓</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold" style={{ color: "#2C3E50" }}>
-            You asked, we answered.
-          </h2>
-          <p style={{ color: "#4A4A4A" }}>
-            Still got questions? Feel free to reach out to our incredible support team, 7 days a week.
-          </p>
-        </div>
-
-        {/* FAQ Items */}
-        <div className="space-y-4">
-          {faqs.map((faq, i) => (
+          <div className="max-w-4xl mx-auto space-y-12">
+            {/* Section Header */}
             <div
-              key={i}
-              className={`rounded-xl bg-white/70 backdrop-blur overflow-hidden transition-all duration-700 ${
+              className={`text-center space-y-6 transition-all duration-1000 ${
+                animateElements ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+            >
+              {/* Badge */}
+              <div className="flex justify-center">
+                <div
+                  className="flex items-center gap-3 px-6 py-3"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.8)",
+                    borderRadius: "99px",
+                    border: "3px solid rgba(255, 255, 255, 0.8)",
+                    display: "inline-flex",
+                  }}
+                >
+                  {/* Left Gradient Dot */}
+                  <div
+                    style={{
+                      width: "12px",
+                      height: "12px",
+                      borderRadius: "50%",
+                      background: "radial-gradient(50% 50%, rgb(255, 162, 0) 0%, rgba(255, 162, 0, 0.69) 100%)",
+                    }}
+                  />
+                  <p className="text-sm font-medium" style={{ color: "rgb(94, 64, 0)" }}>
+                    Faq's
+                  </p>
+                  {/* Right Gradient Dot */}
+                  <div
+                    style={{
+                      width: "12px",
+                      height: "12px",
+                      borderRadius: "50%",
+                      background: "radial-gradient(50% 50%, rgb(255, 162, 0) 0%, rgba(255, 162, 0, 0.69) 100%)",
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Heading */}
+              <h3
+                className="text-4xl md:text-5xl font-medium"
+                style={{ textAlign: "center", color: "rgb(15, 15, 15)" }}
+              >
+                You asked, we answered.
+              </h3>
+
+              {/* Description */}
+              <p className="text-base" style={{ textAlign: "center", color: "rgb(15, 15, 15)" }}>
+                Still got questions? Feel free to reach out to our incredible support team, 7 days a week.
+              </p>
+            </div>
+
+            {/* FAQ Items */}
+            <div
+              className={`space-y-4 transition-all duration-1000 ${
+                animateElements ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+              }`}
+            >
+              {faqs.map((faq, i) => (
+                <div
+                  key={i}
+                  className="transition-all duration-300"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <button
+                    onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
+                    className="w-full px-6 py-5 flex items-center justify-between transition-all hover:bg-white/10"
+                    style={{
+                      border: "1px solid rgb(252, 252, 252)",
+                      backgroundColor: "rgba(255, 255, 255, 0.7)",
+                      borderRadius: "14px",
+                    }}
+                  >
+                    <p
+                      className="text-base font-normal text-left"
+                      style={{
+                        color: "rgb(38, 60, 72)",
+                      }}
+                    >
+                      {faq.question}
+                    </p>
+                    <div className="shrink-0 ml-4">
+                      <img
+                        src="https://framerusercontent.com/images/IfsCgRy56bOVnOlgBKmmWtjavGA.png"
+                        alt=""
+                        className="w-8 h-8 object-cover transition-transform duration-300"
+                        style={{
+                          transform: expandedIndex === i ? "rotate(180deg)" : "rotate(0deg)",
+                        }}
+                      />
+                    </div>
+                  </button>
+                  {expandedIndex === i && (
+                    <div
+                      className="px-6 pb-5 pt-3 text-sm"
+                      style={{
+                        color: "rgb(38, 60, 72)",
+                        borderTop: "1px solid rgba(252, 252, 252, 0.5)",
+                      }}
+                    >
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Contact CTA */}
+            <div
+              className={`text-center transition-all duration-1000 ${
                 animateElements ? "opacity-100" : "opacity-0"
               }`}
-              style={{ transitionDelay: `${i * 100}ms` }}
             >
-              <button
-                onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
-                className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/90 transition-colors"
+              <a
+                href="mailto:support@sahay.gov.in"
+                className="inline-block px-8 py-3 rounded-full font-medium transition-all hover:shadow-lg hover:scale-105"
+                style={{
+                  backgroundColor: "rgb(255, 174, 0)",
+                  border: "3px solid rgb(255, 255, 255)",
+                  color: "rgb(94, 64, 0)",
+                }}
               >
-                <span className="font-medium text-left" style={{ color: "#2C3E50" }}>
-                  {faq.question}
-                </span>
-                <span className="text-2xl" style={{ color: "#FDB714" }}>
-                  {expandedIndex === i ? "−" : "+"}
-                </span>
-              </button>
-              {expandedIndex === i && (
-                <div className="px-6 pb-4 border-t" style={{ borderColor: "#E5E7EB", color: "#4A4A4A" }}>
-                  {faq.answer}
-                </div>
-              )}
+                Contact Us
+              </a>
             </div>
-          ))}
-        </div>
-
-        {/* Contact CTA */}
-        <div
-          className={`text-center mt-12 transition-all duration-700 ${animateElements ? "opacity-100" : "opacity-0"}`}
-        >
-          <button
-            className="px-8 py-3 rounded-full font-bold text-white transition-all hover:shadow-lg hover:scale-105"
-            style={{ backgroundColor: "#FDB714" }}
-          >
-            Contact Us
-          </button>
+          </div>
         </div>
       </div>
     </section>
