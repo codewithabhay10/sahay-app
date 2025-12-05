@@ -1,0 +1,174 @@
+// State Dashboard Types
+
+export interface Project {
+  id: string;
+  name: string;
+  district: string;
+  iaType: string;
+  status: 'Approved' | 'Submitted' | 'In Review' | 'Funds Released' | 'Pending';
+  allocated: number;
+  released: number;
+  ucStatus: string;
+  releasePercentage: number;
+  submittedDate: string;
+}
+
+export interface SNAAccount {
+  id: string;
+  name: string;
+  accountNumber: string;
+  balance: number;
+  change: number;
+  changeType: 'positive' | 'negative';
+  lastUpdated: string;
+}
+
+export interface ProposalFunnelData {
+  submitted: number;
+  inReview: number;
+  approved: number;
+  fundsReleased: number;
+}
+
+export interface KPIData {
+  title: string;
+  value: string | number;
+  change: number;
+  changeType: 'positive' | 'negative';
+  subtitle?: string;
+}
+
+export interface StateDashboardData {
+  stateId: string;
+  stateName: string;
+  kpis: {
+    totalProjects: KPIData;
+    fundsReceived: KPIData;
+    unspentBalance: KPIData;
+    pendingUCs: KPIData;
+  };
+  proposalFunnel: ProposalFunnelData;
+  snaAccounts: {
+    totalBalance: number;
+    accounts: SNAAccount[];
+  };
+  projects: Project[];
+}
+
+export interface FilterOptions {
+  district: string;
+  iaType: string;
+  status: string;
+  search: string;
+}
+
+export type SortField = 'name' | 'allocated' | 'released' | 'submittedDate';
+export type SortOrder = 'asc' | 'desc';
+
+// IA Dashboard Types
+
+export type MilestoneStatus = 'completed' | 'in-progress' | 'pending';
+export type EvidenceCategory = 'photo' | 'video' | 'document';
+export type TrainingStatus = 'completed' | 'in-progress' | 'not-started';
+export type PlacementStatus = 'placed' | 'searching' | 'not-applicable';
+
+export interface Milestone {
+  id: string;
+  name: string;
+  targetDate: string;
+  completionDate?: string;
+  status: MilestoneStatus;
+  remark?: string;
+}
+
+export interface Evidence {
+  id: string;
+  name: string;
+  category: EvidenceCategory;
+  url: string;
+  size: number;
+  uploadDate: string;
+  thumbnail?: string;
+}
+
+export interface Beneficiary {
+  id: string;
+  name: string;
+  mobile: string;
+  district: string;
+  registrationDate: string;
+  trainingStatus: TrainingStatus;
+  placementStatus: PlacementStatus;
+  disbursal: number;
+}
+
+export interface IAProjectInfo {
+  iaId: string;
+  iaName: string;
+  projectName: string;
+  projectId: string;
+  startDate: string;
+  endDate: string;
+  district: string;
+}
+
+export interface IAKPIs {
+  beneficiariesRegistered: {
+    current: number;
+    target: number;
+  };
+  amountReleased: {
+    amount: number;
+    allocated: number;
+  };
+  amountUtilized: {
+    amount: number;
+    percentage: number;
+  };
+  placementRate: {
+    percentage: number;
+    placed: number;
+    total: number;
+  };
+}
+
+export interface IADashboardData {
+  project: IAProjectInfo;
+  kpis: IAKPIs;
+  milestones: Milestone[];
+  evidence: Evidence[];
+  beneficiaries: Beneficiary[];
+}
+
+// Fund Release Queue Types
+
+export type PACCDecision = 'approved' | 'pending' | 'conditionally-approved' | 'rejected';
+export type UCStatus = 'submitted' | 'approved' | 'pending' | 'overdue' | 'not-required';
+export type ProposalStatus = 'pending-release' | 'processing' | 'completed' | 'on-hold' | 'rejected';
+
+export interface FundProposal {
+  id: string;
+  proposalId: string;
+  stateName: string;
+  stateCode: string;
+  amountRequested: number;
+  paccDecision: PACCDecision;
+  ucStatus: UCStatus;
+  status: ProposalStatus;
+  snaAccountId: string;
+  snaAccountNumber: string;
+  submittedDate: string;
+  projectName: string;
+  documents: {
+    name: string;
+    url: string;
+    uploadedDate: string;
+  }[];
+}
+
+export interface FundReleaseRequest {
+  proposalId: string;
+  amount: number;
+  snaAccountId: string;
+  paymentMode: 'NEFT' | 'RTGS' | 'ACH';
+}
