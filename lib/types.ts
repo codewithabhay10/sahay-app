@@ -172,3 +172,50 @@ export interface FundReleaseRequest {
   snaAccountId: string;
   paymentMode: 'NEFT' | 'RTGS' | 'ACH';
 }
+
+// SNA Reconciliation Types
+
+export type FTOStatus = 'unreconciled' | 'reconciled' | 'partially-reconciled' | 'disputed';
+export type AnomalyType = 'amount-mismatch' | 'missing-fto' | 'missing-bank-tx' | 'duplicate' | 'date-mismatch';
+
+export interface FTORecord {
+  id: string;
+  ftoId: string;
+  projectName: string;
+  projectId: string;
+  amount: number;
+  issuedAt: string;
+  status: FTOStatus;
+  matchedBankTxId?: string;
+}
+
+export interface BankTransaction {
+  id: string;
+  bankTxId: string;
+  date: string;
+  amount: number;
+  narration: string;
+  isMatched: boolean;
+  matchedFTOId?: string;
+}
+
+export interface ReconciliationMatch {
+  ftoId: string;
+  bankTxId: string;
+  matchedAt: string;
+  matchedBy: string;
+  isAutoMatched: boolean;
+  confidence?: number;
+}
+
+export interface Anomaly {
+  id: string;
+  type: AnomalyType;
+  severity: 'high' | 'medium' | 'low';
+  ftoId?: string;
+  bankTxId?: string;
+  description: string;
+  detectedAt: string;
+  amount?: number;
+  status: 'pending' | 'resolved' | 'ignored';
+}

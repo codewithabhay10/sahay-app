@@ -85,9 +85,23 @@ export default function SNAAccountsList({ accounts, totalBalance }: SNAAccountsL
         ))}
       </div>
       
-      <button className="w-full mt-3 px-4 py-2 text-sm font-medium text-[#EA9000] hover:bg-orange-50 rounded-lg transition-colors border border-gray-200">
-        View All
-      </button>
+      <div className="pt-4 border-t border-gray-200 text-center">
+        <a 
+          href="/funds/sna" 
+          className="text-sm font-medium text-[#EA9000] hover:text-[#d88000] transition-colors inline-flex items-center gap-1"
+        >
+          View All & Reconcile
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path
+              d="M6 12L10 8L6 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </a>
+      </div>
     </div>
   );
 }

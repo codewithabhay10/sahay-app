@@ -126,6 +126,42 @@ export default function Sidebar() {
       href: "/funds/queue",
     },
     {
+      title: "SNA Reconciliation",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path
+            d="M17.5 5.83333L10 10.8333L2.5 5.83333"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M10 18.3333V10.8333"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M17.5 14.1667V5.83333L10 1.66667L2.5 5.83333V14.1667L10 18.3333L17.5 14.1667Z"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M2.5 5.83333L10 10.8333L17.5 5.83333"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+      href: "/funds/sna",
+    },
+    {
       title: "Reports",
       icon: (
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -320,7 +356,7 @@ export default function Sidebar() {
       </div>
 
       {/* Navigation Items */}
-      <nav className="flex-1 py-6 overflow-y-auto">
+      <nav className="flex-1 py-6 overflow-y-auto scrollbar-hide">
         <ul className="space-y-2 px-3">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
