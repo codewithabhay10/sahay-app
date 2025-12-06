@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/dashboard-layout';
+import { User, CreditCard, Phone, Building2, Briefcase, Upload, Eye, Check } from 'lucide-react';
 
 interface FormData {
   beneficiaryName: string;
@@ -10,8 +11,6 @@ interface FormData {
   bankAccount: string;
   ifsc: string;
   projectId: string;
-  aadhaarDoc?: File;
-  casteCertificate?: File;
 }
 
 export default function RegisterBeneficiaryPage() {
@@ -25,369 +24,322 @@ export default function RegisterBeneficiaryPage() {
   });
 
   const [validation, setValidation] = useState({
-    aadhaar: { validated: false, loading: false, message: '' },
-    bank: { validated: false, loading: false, message: '' },
+    aadhaar: { validated: false, loading: false },
+    bank: { validated: false, loading: false },
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [showAadhaar, setShowAadhaar] = useState(false);
+  const [showBankAccount, setShowBankAccount] = useState(false);
 
-  // Mask Aadhaar - show only last 4 digits
-  const maskAadhaar = (value: string) => {
-    const numbers = value.replace(/\D/g, '');
-    if (numbers.length <= 4) return numbers;
-    return 'XXXX-XXXX-' + numbers.slice(-4);
-  };
+  const [files, setFiles] = useState({
+    aadhaarDoc: null as File | null,
+    casteCertificate: null as File | null,
+  });
 
-  // Mask Bank Account - show only last 4 digits
-  const maskBankAccount = (value: string) => {
-    const numbers = value.replace(/\D/g, '');
-    if (numbers.length <= 4) return numbers;
-    return 'XXXX-XXXX-' + numbers.slice(-4);
-  };
-
-  const handleAadhaarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, '').slice(0, 12);
-    setFormData({ ...formData, aadhaar: value });
-    setValidation(prev => ({ ...prev, aadhaar: { validated: false, loading: false, message: '' } }));
-  };
-
-  const handleMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, '').slice(0, 10);
-    setFormData({ ...formData, mobile: value });
-  };
-
-  const handleBankAccountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, '').slice(0, 16);
-    setFormData({ ...formData, bankAccount: value });
-    setValidation(prev => ({ ...prev, bank: { validated: false, loading: false, message: '' } }));
-  };
-
-  const handleValidateAadhaar = async () => {
+  const handleAadhaarValidate = async () => {
     if (formData.aadhaar.length !== 12) {
-      setValidation(prev => ({
-        ...prev,
-        aadhaar: { validated: false, loading: false, message: 'Aadhaar must be 12 digits' }
-      }));
+      alert('Please enter a valid 12-digit Aadhaar number');
       return;
     }
-
-    setValidation(prev => ({ ...prev, aadhaar: { ...prev.aadhaar, loading: true } }));
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // Mock validation (in real app, call API)
-    const isValid = formData.aadhaar.length === 12;
-    setValidation(prev => ({
-      ...prev,
-      aadhaar: {
-        validated: isValid,
-        loading: false,
-        message: isValid ? 'Aadhaar verified successfully' : 'Invalid Aadhaar number'
-      }
-    }));
+    setValidation(prev => ({ ...prev, aadhaar: { validated: false, loading: true } }));
+    setTimeout(() => {
+      setValidation(prev => ({ ...prev, aadhaar: { validated: true, loading: false } }));
+    }, 1000);
   };
 
-  const handleValidateBank = async () => {
+  const handleBankValidate = async () => {
     if (!formData.bankAccount || !formData.ifsc) {
-      setValidation(prev => ({
-        ...prev,
-        bank: { validated: false, loading: false, message: 'Please enter both account number and IFSC' }
-      }));
+      alert('Please enter both bank account number and IFSC code');
       return;
     }
-
-    if (formData.ifsc.length !== 11) {
-      setValidation(prev => ({
-        ...prev,
-        bank: { validated: false, loading: false, message: 'IFSC must be 11 characters' }
-      }));
-      return;
-    }
-
-    setValidation(prev => ({ ...prev, bank: { ...prev.bank, loading: true } }));
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    // Mock validation
-    const isValid = formData.bankAccount.length >= 9 && formData.ifsc.length === 11;
-    setValidation(prev => ({
-      ...prev,
-      bank: {
-        validated: isValid,
-        loading: false,
-        message: isValid ? 'Bank details verified successfully' : 'Invalid bank details'
-      }
-    }));
+    setValidation(prev => ({ ...prev, bank: { validated: false, loading: true } }));
+    setTimeout(() => {
+      setValidation(prev => ({ ...prev, bank: { validated: true, loading: false } }));
+    }, 1000);
   };
 
-  const handleFileChange = (field: 'aadhaarDoc' | 'casteCertificate', file: File | undefined) => {
-    setFormData({ ...formData, [field]: file });
+  const handleFileChange = (field: 'aadhaarDoc' | 'casteCertificate', e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setFiles(prev => ({ ...prev, [field]: file }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validation checks
     if (!validation.aadhaar.validated) {
-      setSubmitMessage({ type: 'error', text: 'Please validate Aadhaar before submitting' });
+      alert('Please validate Aadhaar number first');
       return;
     }
-
     if (!validation.bank.validated) {
-      setSubmitMessage({ type: 'error', text: 'Please validate bank details before submitting' });
+      alert('Please validate bank details first');
       return;
     }
-
-    if (!formData.casteCertificate) {
-      setSubmitMessage({ type: 'error', text: 'Please upload caste certificate' });
-      return;
-    }
-
-    setIsSubmitting(true);
-    setSubmitMessage(null);
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    // Mock success
-    setSubmitMessage({ type: 'success', text: 'Beneficiary registered successfully! ID: BEN-2024-' + Math.floor(Math.random() * 10000) });
-    setIsSubmitting(false);
-
-    // Reset form after success
-    setTimeout(() => {
-      setFormData({
-        beneficiaryName: '',
-        aadhaar: '',
-        mobile: '',
-        bankAccount: '',
-        ifsc: '',
-        projectId: '',
-      });
-      setValidation({
-        aadhaar: { validated: false, loading: false, message: '' },
-        bank: { validated: false, loading: false, message: '' },
-      });
-      setSubmitMessage(null);
-    }, 3000);
+    console.log('Submitting registration:', formData, files);
+    alert('Beneficiary registered successfully!');
   };
-
-  const projects = [
-    { id: 'PROJ-001', name: 'Rural Infrastructure Development - Maharashtra' },
-    { id: 'PROJ-002', name: 'Skill Development Initiative - Pune' },
-    { id: 'PROJ-003', name: 'Water Supply Enhancement - Nashik' },
-    { id: 'PROJ-004', name: 'Urban Housing Scheme - Mumbai' },
-  ];
 
   return (
     <DashboardLayout>
-      <main className="flex-1 overflow-auto">
-        {/* Header */}
+      <div className="min-h-screen bg-gray-50">
         <div className="bg-white border-b border-gray-200 px-8 py-6">
-          <h1 className="text-3xl font-bold text-[#2C3E50]">Register Beneficiary</h1>
-          <p className="text-gray-600 mt-1">Add new beneficiaries to projects</p>
+          <h1 className="text-2xl font-bold text-[#2C3E50]">Beneficiary Registration</h1>
+          <p className="text-sm text-gray-600 mt-1">Add new beneficiaries for projects</p>
         </div>
-
-        {/* Form */}
-        <div className="p-8">
-          <div className="max-w-4xl mx-auto">
-            <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-8">
-              {/* Success/Error Message */}
-              {submitMessage && (
-                <div className={`mb-6 p-4 rounded-lg border ${
-                  submitMessage.type === 'success' 
-                    ? 'bg-green-50 border-green-200 text-green-800' 
-                    : 'bg-red-50 border-red-200 text-red-800'
-                }`}>
-                  <p className="text-sm font-medium">{submitMessage.text}</p>
-                </div>
-              )}
-
-              <div className="space-y-6">
-                {/* Beneficiary Name */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Beneficiary Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.beneficiaryName}
-                    onChange={(e) => setFormData({ ...formData, beneficiaryName: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA9000] focus:border-transparent"
-                    placeholder="Enter full name"
-                    required
-                  />
-                </div>
-
-                {/* Aadhaar */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Aadhaar Number <span className="text-red-500">*</span>
-                  </label>
-                  <div className="flex gap-3">
-                    <input
-                      type="text"
-                      value={formData.aadhaar.length > 0 ? maskAadhaar(formData.aadhaar) : ''}
-                      onChange={handleAadhaarChange}
-                      className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA9000] focus:border-transparent"
-                      placeholder="XXXX-XXXX-1234"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={handleValidateAadhaar}
-                      disabled={validation.aadhaar.loading || formData.aadhaar.length !== 12}
-                      className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      {validation.aadhaar.loading ? 'Validating...' : 'Validate Aadhaar'}
-                    </button>
+        <div className="p-8 flex justify-center">
+          <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-6 w-full max-w-4xl">
+            <div className="space-y-6">
+              {/* Personal Information */}
+              <div>
+                <h3 className="text-gray-900 mb-4 pb-2 border-b border-gray-200">Personal Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Beneficiary Name */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm text-gray-700 mb-2">Beneficiary Name *</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <User className="w-5 h-5 text-gray-400" />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Enter full name"
+                        value={formData.beneficiaryName}
+                        onChange={(e) => setFormData({ ...formData, beneficiaryName: e.target.value })}
+                        className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 border-gray-300"
+                        required
+                      />
+                    </div>
                   </div>
-                  {validation.aadhaar.message && (
-                    <p className={`text-sm mt-2 ${validation.aadhaar.validated ? 'text-green-600' : 'text-red-600'}`}>
-                      {validation.aadhaar.validated && '✓ '}{validation.aadhaar.message}
-                    </p>
-                  )}
-                  <p className="text-xs text-gray-500 mt-1">12-digit Aadhaar number (masked for security)</p>
-                </div>
 
-                {/* Aadhaar Document Upload */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Upload Aadhaar Document (optional)
-                  </label>
-                  <input
-                    type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => handleFileChange('aadhaarDoc', e.target.files?.[0])}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA9000] focus:border-transparent"
-                  />
-                  {formData.aadhaarDoc && (
-                    <p className="text-sm text-green-600 mt-2">✓ {formData.aadhaarDoc.name}</p>
-                  )}
-                </div>
+                  {/* Aadhaar Number */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm text-gray-700 mb-2">Aadhaar Number *</label>
+                    <div className="flex gap-2">
+                      <div className="flex-1 relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <CreditCard className="w-5 h-5 text-gray-400" />
+                        </div>
+                        <input
+                          type={showAadhaar ? "text" : "password"}
+                          placeholder="Enter 12-digit Aadhaar number"
+                          maxLength={12}
+                          value={formData.aadhaar}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '');
+                            setFormData({ ...formData, aadhaar: value });
+                            setValidation(prev => ({ ...prev, aadhaar: { validated: false, loading: false } }));
+                          }}
+                          className="w-full pl-10 pr-20 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 border-gray-300"
+                          required
+                        />
+                        <div className="absolute inset-y-0 right-0 flex items-center gap-1 pr-3">
+                          <button
+                            type="button"
+                            onClick={() => setShowAadhaar(!showAadhaar)}
+                            className="p-1 hover:bg-gray-100 rounded"
+                          >
+                            <Eye className="w-4 h-4 text-gray-500" />
+                          </button>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleAadhaarValidate}
+                        disabled={validation.aadhaar.loading || validation.aadhaar.validated || formData.aadhaar.length !== 12}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 whitespace-nowrap"
+                      >
+                        {validation.aadhaar.validated && <Check className="w-4 h-4" />}
+                        <span className="hidden sm:inline">
+                          {validation.aadhaar.loading ? 'Validating...' : validation.aadhaar.validated ? 'Validated' : 'Validate'}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
 
-                {/* Mobile */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Mobile Number <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="tel"
-                    value={formData.mobile}
-                    onChange={handleMobileChange}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA9000] focus:border-transparent"
-                    placeholder="10-digit mobile number"
-                    pattern="[0-9]{10}"
-                    required
-                  />
-                  <p className="text-xs text-gray-500 mt-1">10-digit mobile number</p>
-                </div>
+                  {/* Aadhaar Document */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm text-gray-700 mb-2">Aadhaar Document (Optional)</label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-orange-400 transition-colors">
+                      <label className="flex flex-col items-center cursor-pointer">
+                        <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                        {files.aadhaarDoc ? (
+                          <span className="text-sm text-gray-700 font-medium">{files.aadhaarDoc.name}</span>
+                        ) : (
+                          <>
+                            <span className="text-sm text-gray-600 mb-1">Click to upload or drag and drop</span>
+                            <span className="text-xs text-gray-500">PDF, JPG, PNG (Max 5MB)</span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) setFiles(prev => ({ ...prev, aadhaarDoc: file }));
+                          }}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                  </div>
 
-                {/* Bank Account & IFSC */}
-                <div className="grid grid-cols-2 gap-4">
+                  {/* Mobile Number */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Bank Account Number <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.bankAccount.length > 0 ? maskBankAccount(formData.bankAccount) : ''}
-                      onChange={handleBankAccountChange}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA9000] focus:border-transparent"
-                      placeholder="XXXX-XXXX-1234"
-                      required
-                    />
+                    <label className="block text-sm text-gray-700 mb-2">Mobile Number *</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Phone className="w-5 h-5 text-gray-400" />
+                      </div>
+                      <input
+                        type="tel"
+                        placeholder="Enter 10-digit mobile number"
+                        maxLength={10}
+                        value={formData.mobile}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '');
+                          setFormData({ ...formData, mobile: value });
+                        }}
+                        className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 border-gray-300"
+                        required
+                      />
+                    </div>
                   </div>
+
+                  {/* Caste Certificate */}
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      IFSC Code <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.ifsc}
-                      onChange={(e) => setFormData({ ...formData, ifsc: e.target.value.toUpperCase().slice(0, 11) })}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA9000] focus:border-transparent"
-                      placeholder="SBIN0001234"
-                      pattern="[A-Z]{4}0[A-Z0-9]{6}"
-                      required
-                    />
+                    <label className="block text-sm text-gray-700 mb-2">Caste Certificate *</label>
+                    <div className="border-2 border-dashed rounded-lg p-4 hover:border-orange-400 transition-colors border-gray-300">
+                      <label className="flex flex-col items-center cursor-pointer">
+                        <Upload className="w-6 h-6 text-gray-400 mb-1" />
+                        {files.casteCertificate ? (
+                          <span className="text-xs text-gray-700 font-medium truncate max-w-full">{files.casteCertificate.name}</span>
+                        ) : (
+                          <>
+                            <span className="text-xs text-gray-600 mb-0.5">Upload certificate</span>
+                            <span className="text-xs text-gray-500">PDF, JPG (Max 5MB)</span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          accept=".pdf,.jpg,.jpeg,.png"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) setFiles(prev => ({ ...prev, casteCertificate: file }));
+                          }}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
                   </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={handleValidateBank}
-                  disabled={validation.bank.loading || !formData.bankAccount || !formData.ifsc}
-                  className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  {validation.bank.loading ? 'Validating...' : 'Validate Bank Details'}
-                </button>
-
-                {validation.bank.message && (
-                  <p className={`text-sm ${validation.bank.validated ? 'text-green-600' : 'text-red-600'}`}>
-                    {validation.bank.validated && '✓ '}{validation.bank.message}
-                  </p>
-                )}
-
-                {/* Caste Certificate */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Upload Caste Certificate <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => handleFileChange('casteCertificate', e.target.files?.[0])}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA9000] focus:border-transparent"
-                    required
-                  />
-                  {formData.casteCertificate && (
-                    <p className="text-sm text-green-600 mt-2">✓ {formData.casteCertificate.name}</p>
-                  )}
-                </div>
-
-                {/* Project Selection */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Project to Enroll <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={formData.projectId}
-                    onChange={(e) => setFormData({ ...formData, projectId: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA9000] focus:border-transparent"
-                    required
-                  >
-                    <option value="">Select a project</option>
-                    {projects.map(project => (
-                      <option key={project.id} value={project.id}>{project.name}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Submit Button */}
-                <div className="flex items-center justify-end gap-4 pt-4 border-t border-gray-200">
-                  <button
-                    type="button"
-                    onClick={() => window.history.back()}
-                    className="px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting || !validation.aadhaar.validated || !validation.bank.validated}
-                    className="px-6 py-2.5 bg-[#EA9000] text-white rounded-lg hover:bg-[#d88000] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {isSubmitting ? 'Registering...' : 'Save & Register'}
-                  </button>
                 </div>
               </div>
-            </form>
-          </div>
+
+              {/* Bank Account Details */}
+              <div>
+                <h3 className="text-gray-900 mb-4 pb-2 border-b border-gray-200">Bank Account Details</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Bank Account Number */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm text-gray-700 mb-2">Bank Account Number *</label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Building2 className="w-5 h-5 text-gray-400" />
+                      </div>
+                      <input
+                        type={showBankAccount ? "text" : "password"}
+                        placeholder="Enter bank account number"
+                        value={formData.bankAccount}
+                        onChange={(e) => {
+                          setFormData({ ...formData, bankAccount: e.target.value });
+                          setValidation(prev => ({ ...prev, bank: { validated: false, loading: false } }));
+                        }}
+                        className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 border-gray-300"
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowBankAccount(!showBankAccount)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      >
+                        <Eye className="w-4 h-4 text-gray-500" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* IFSC Code */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-2">IFSC Code *</label>
+                    <input
+                      type="text"
+                      placeholder="e.g., SBIN0001234"
+                      maxLength={11}
+                      value={formData.ifsc}
+                      onChange={(e) => {
+                        setFormData({ ...formData, ifsc: e.target.value.toUpperCase() });
+                        setValidation(prev => ({ ...prev, bank: { validated: false, loading: false } }));
+                      }}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 border-gray-300"
+                      required
+                    />
+                  </div>
+
+                  {/* Validate Button */}
+                  <div className="flex items-end">
+                    <button
+                      type="button"
+                      onClick={handleBankValidate}
+                      disabled={validation.bank.loading || validation.bank.validated || !formData.bankAccount || !formData.ifsc}
+                      className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      <span>{validation.bank.loading ? 'Validating...' : validation.bank.validated ? 'Validated ✓' : 'Validate Bank Details'}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Project Enrollment */}
+              <div>
+                <h3 className="text-gray-900 mb-4 pb-2 border-b border-gray-200">Project Enrollment</h3>
+                <div>
+                  <label className="block text-sm text-gray-700 mb-2">Select Project to Enroll *</label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Briefcase className="w-5 h-5 text-gray-400" />
+                    </div>
+                    <select
+                      value={formData.projectId}
+                      onChange={(e) => setFormData({ ...formData, projectId: e.target.value })}
+                      className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 border-gray-300"
+                      required
+                    >
+                      <option value="">-- Select a project --</option>
+                      <option value="proj-001">Youth Skill Development Program</option>
+                      <option value="proj-002">Rural Infrastructure Improvement</option>
+                      <option value="proj-003">Farmer Training and Support</option>
+                      <option value="proj-004">Women Empowerment Scheme</option>
+                      <option value="proj-005">Digital Literacy Program</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Submit Section */}
+              <div className="pt-4 border-t border-gray-200">
+                <div className="flex flex-col sm:flex-row items-center gap-3">
+                  <button
+                    type="submit"
+                    className="w-full sm:w-auto px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <Check className="w-5 h-5" />
+                    <span>Save &amp; Register Beneficiary</span>
+                  </button>
+                  <p className="text-sm text-gray-500">All fields marked with * are required</p>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
-      </main>
+      </div>
     </DashboardLayout>
   );
 }
