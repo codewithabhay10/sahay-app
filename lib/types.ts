@@ -219,3 +219,181 @@ export interface Anomaly {
   amount?: number;
   status: 'pending' | 'resolved' | 'ignored';
 }
+
+// Proposal Submission Types
+
+export type ProposalCategory = 'Income' | 'Skill' | 'Infrastructure';
+export type ProposalStatus = 'Draft' | 'Submitted' | 'In Review' | 'Approved' | 'Rejected';
+export type ImplementationPartner = 'State Government' | 'District Administration' | 'Educational Institutions' | 'NGOs' | 'Community Organizations';
+export type ConvergenceNeed = 'MGNREGA' | 'State Skill Development' | 'Others';
+
+export interface BudgetLineItem {
+  id: string;
+  category: 'Labour' | 'Material' | 'Asset' | 'Training Fee' | 'Contingency';
+  description: string;
+  amount: number;
+}
+
+export interface Activity {
+  id: string;
+  description: string;
+}
+
+export interface TimelinePhase {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  status: 'not-started' | 'in-progress' | 'completed';
+}
+
+export interface ProposalDocument {
+  id: string;
+  name: string;
+  type: 'pdf' | 'image' | 'video';
+  url: string;
+  size: number;
+  uploadDate: string;
+}
+
+export interface AIValidationResult {
+  isValid: boolean;
+  completeness: number; // percentage
+  compliance: number; // percentage
+  issues: string[];
+}
+
+export interface DuplicationCheck {
+  isDuplicate: boolean;
+  possibleDuplicates: {
+    proposalId: string;
+    proposalTitle: string;
+    similarity: number; // percentage
+    submittedBy: string;
+    submittedDate: string;
+  }[];
+}
+
+export interface AIRecommendation {
+  score: number; // 0-100
+  strengths: string[];
+  improvements: string[];
+  budgetAssessment: string;
+}
+
+export interface ProposalFormData {
+  // Basic Information
+  title: string;
+  category: ProposalCategory;
+  district: string;
+  estimatedBudget: number;
+  startDate: string;
+  endDate: string;
+
+  // Beneficiary Information
+  expectedBeneficiaryCount: number;
+  targetGroups: {
+    women: boolean;
+    youth: boolean;
+    scSt: boolean;
+    minorities: boolean;
+    disabled: boolean;
+    bplFamilies: boolean;
+    farmers: boolean;
+    ruralPoor: boolean;
+  };
+  eligibilityCriteria: string;
+
+  // Project Blueprint
+  objective: string;
+  activities: Activity[];
+  expectedOutcomes: string;
+  implementationPartners: ImplementationPartner[];
+  timeline: TimelinePhase[];
+  convergenceNeeds: {
+    mgnrega: boolean;
+    stateSkill: boolean;
+    others: boolean;
+  };
+
+  // Budget Breakup
+  budgetLineItems: BudgetLineItem[];
+
+  // Documents
+  documents: ProposalDocument[];
+
+  // Status & AI Analysis
+  status: ProposalStatus;
+  aiValidation?: AIValidationResult;
+  duplicationCheck?: DuplicationCheck;
+  aiRecommendation?: AIRecommendation;
+}
+
+// PACC Portal Types
+
+export type MeetingStatus = 'Upcoming' | 'Completed' | 'Cancelled';
+export type MeetingType = 'Review' | 'Emergency' | 'Regular';
+
+export interface PACCAttendee {
+  id: string;
+  name: string;
+  role: string;
+  email: string;
+  avatar?: string;
+}
+
+export interface ProposalAgendaItem {
+  id: string;
+  proposalId: string;
+  proposalTitle: string;
+  proposer: string;
+  category: string;
+  budget: number;
+}
+
+export interface MeetingDecision {
+  proposalId: string;
+  decision: 'Approved' | 'Rejected' | 'Deferred' | 'Needs Revision';
+  comments: string;
+  votesFor?: number;
+  votesAgainst?: number;
+}
+
+export interface MinutesOfMeeting {
+  id: string;
+  meetingId: string;
+  generatedAt: string;
+  generatedBy: string;
+  attendees: string[];
+  agenda: string[];
+  discussions: string[];
+  decisions: MeetingDecision[];
+  actionItems: {
+    id: string;
+    description: string;
+    assignedTo: string;
+    dueDate: string;
+    status: 'Pending' | 'In Progress' | 'Completed';
+  }[];
+  nextMeetingDate?: string;
+}
+
+export interface PACCMeeting {
+  id: string;
+  title: string;
+  type: MeetingType;
+  status: MeetingStatus;
+  organizer: string;
+  organizerId: string;
+  date: string;
+  time: string;
+  duration: number; // minutes
+  attendees: PACCAttendee[];
+  proposalsOnAgenda: ProposalAgendaItem[];
+  meetingLink?: string;
+  recordingLink?: string;
+  transcriptLink?: string;
+  mom?: MinutesOfMeeting;
+  createdAt: string;
+  updatedAt: string;
+}
