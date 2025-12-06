@@ -8,10 +8,9 @@ import { FundProposal, PACCDecision, UCStatus, ProposalStatus } from '@/lib/type
 import DashboardLayout from '@/components/dashboard-layout';
 
 export default function FundQueuePage() {
-  const [selectedProposalIds, setSelectedProposalIds] = useState<string[]>([]);
   const [selectedProposal, setSelectedProposal] = useState<FundProposal | null>(null);
   const [showReleaseModal, setShowReleaseModal] = useState(false);
-  const [proposalsToRelease, setProposalsToRelease] = useState<FundProposal[]>([]);
+  const [proposalToRelease, setProposalToRelease] = useState<FundProposal | null>(null);
   
   // Filters
   const [stateFilter, setStateFilter] = useState('All States');
@@ -31,36 +30,15 @@ export default function FundQueuePage() {
     });
   }, [stateFilter, paccFilter, ucFilter, statusFilter, searchQuery]);
 
-  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setSelectedProposalIds(filteredProposals.map(p => p.id));
-    } else {
-      setSelectedProposalIds([]);
-    }
-  };
-
-  const handleSelectProposal = (id: string) => {
-    setSelectedProposalIds(prev =>
-      prev.includes(id) ? prev.filter(pid => pid !== id) : [...prev, id]
-    );
-  };
-
   const handleRelease = (proposal: FundProposal) => {
-    setProposalsToRelease([proposal]);
-    setShowReleaseModal(true);
-  };
-
-  const handleBulkRelease = () => {
-    const proposals = fundQueueProposals.filter(p => selectedProposalIds.includes(p.id));
-    setProposalsToRelease(proposals);
+    setProposalToRelease(proposal);
     setShowReleaseModal(true);
   };
 
   const handleConfirmRelease = (paymentMode: 'NEFT' | 'RTGS' | 'ACH') => {
-    console.log('Releasing funds via', paymentMode, proposalsToRelease);
+    console.log('Releasing funds via', paymentMode, proposalToRelease);
     setShowReleaseModal(false);
-    setProposalsToRelease([]);
-    setSelectedProposalIds([]);
+    setProposalToRelease(null);
     // In real app, would update proposal status to 'processing'
   };
 
@@ -116,36 +94,15 @@ export default function FundQueuePage() {
     return <span className={`px-2 py-1 rounded-full text-xs font-medium ${styles[status]}`}>{labels[status]}</span>;
   };
 
-  const totalSelectedAmount = selectedProposalIds.reduce((sum, id) => {
-    const proposal = fundQueueProposals.find(p => p.id === id);
-    return sum + (proposal?.amountRequested || 0);
-  }, 0);
-
   return (
     <DashboardLayout>
       
       <main className="flex-1 overflow-auto">
         {/* Header */}
         <div className="bg-white border-b border-gray-200 px-8 py-6">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold text-[#2C3E50]">Fund Release Queue</h1>
-              <p className="text-gray-600 mt-1">Review and release funds to state SNA accounts</p>
-            </div>
-            
-            {selectedProposalIds.length > 0 && (
-              <button
-                onClick={handleBulkRelease}
-                className="px-6 py-3 bg-[#EA9000] text-white font-medium rounded-lg hover:bg-[#d88000] transition-colors flex items-center gap-2"
-              >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M16.6667 12.5V15.8333C16.6667 16.2754 16.4911 16.6993 16.1785 17.0118C15.8659 17.3244 15.442 17.5 15 17.5H5C4.55797 17.5 4.13405 17.3244 3.82149 17.0118C3.50893 16.6993 3.33334 16.2754 3.33334 15.8333V12.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M5.83334 8.33333L10 12.5L14.1667 8.33333" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M10 12.5V3.33333" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                Bulk Release ({selectedProposalIds.length}) - ₹{totalSelectedAmount.toFixed(2)} Cr
-              </button>
-            )}
+          <div className="mb-4">
+            <h1 className="text-3xl font-bold text-[#2C3E50]">Fund Release Queue</h1>
+            <p className="text-gray-600 mt-1">Review and release funds to state SNA accounts</p>
           </div>
 
           {/* Filters */}
@@ -191,15 +148,7 @@ export default function FundQueuePage() {
               <table className="w-full">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="px-4 py-3 text-left">
-                      <input
-                        type="checkbox"
-                        checked={selectedProposalIds.length === filteredProposals.length && filteredProposals.length > 0}
-                        onChange={handleSelectAll}
-                        className="rounded border-gray-300"
-                      />
-                    </th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Proposal ID</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Proposal ID</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">State</th>
                     <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Amount</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">PACC</th>
@@ -215,14 +164,6 @@ export default function FundQueuePage() {
                       className={`border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${selectedProposal?.id === proposal.id ? 'bg-orange-50' : ''}`}
                       onClick={() => setSelectedProposal(proposal)}
                     >
-                      <td className="px-4 py-4" onClick={(e) => e.stopPropagation()}>
-                        <input
-                          type="checkbox"
-                          checked={selectedProposalIds.includes(proposal.id)}
-                          onChange={() => handleSelectProposal(proposal.id)}
-                          className="rounded border-gray-300"
-                        />
-                      </td>
                       <td className="px-4 py-4">
                         <p className="font-semibold text-gray-900 text-sm">{proposal.proposalId}</p>
                         <p className="text-xs text-gray-500 mt-0.5">{proposal.projectName}</p>
@@ -340,9 +281,9 @@ export default function FundQueuePage() {
         isOpen={showReleaseModal}
         onClose={() => {
           setShowReleaseModal(false);
-          setProposalsToRelease([]);
+          setProposalToRelease(null);
         }}
-        proposals={proposalsToRelease}
+        proposals={proposalToRelease ? [proposalToRelease] : []}
         onConfirm={handleConfirmRelease}
       />
     </DashboardLayout>
