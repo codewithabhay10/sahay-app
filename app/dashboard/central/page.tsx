@@ -1,10 +1,12 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import Sidebar from "@/components/sidebar";
 import IndiaMapHeatmap from "@/components/india-map-heatmap";
 import TimeSeriesChart from "@/components/time-series-chart";
 import DonutChart from "@/components/donut-chart";
 import DashboardLayout from "@/components/dashboard-layout";
+import router from "next/router";
 
 export default function CentralDashboard() {
   const [dateRange, setDateRange] = useState("Last 30 Days");
@@ -521,16 +523,22 @@ export default function CentralDashboard() {
                 <h3 className="text-lg font-semibold text-[#2C3E50] mb-4">
                   Quick Actions
                 </h3>
-                <div className="space-y-3">
-                  <button className="w-full px-4 py-3 bg-[#EA9000] text-white rounded-lg font-medium hover:bg-[#d88000] transition-colors">
-                    Release New Fund
-                  </button>
-                  <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                    Generate Report
-                  </button>
-                  <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors">
-                    View All Projects
-                  </button>
+                <div className="space-y-6">
+                  <Link href="/funds/queue">
+                    <button className="w-full px-4 py-3 bg-[#EA9000] text-white rounded-lg font-medium hover:bg-[#d88000] transition-colors" style={{ marginBottom: '1rem' }}>
+                      Release New Fund
+                    </button>
+                  </Link>
+                  <Link href="/funds/queue">
+                    <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors" style={{ marginBottom: '1rem' }}>
+                      Generate Report
+                    </button>
+                  </Link>
+                  <Link href="/funds/queue">
+                    <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors" style={{ marginBottom: '1rem' }}>
+                      View All Projects
+                    </button>
+                  </Link>
                 </div>
               </div>
 
