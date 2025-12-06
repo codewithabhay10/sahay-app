@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import Sidebar from '@/components/sidebar';
+import DashboardLayout from '@/components/dashboard-layout';
 import KPICard from '@/components/kpi-card';
 import ProposalFunnel from '@/components/proposal-funnel';
 import SNAAccountsList from '@/components/sna-accounts-list';
@@ -56,12 +56,9 @@ export default function StateDashboard() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F5F7FA]">
-      <Sidebar />
-      
-      <main className="flex-1 overflow-auto">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-8 py-6 sticky top-0 z-10">
+    <DashboardLayout>
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-8 py-6 sticky top-0 z-10">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-[#2C3E50]">{data.stateName} Dashboard</h1>
@@ -335,7 +332,6 @@ export default function StateDashboard() {
             )}
           </div>
         </div>
-      </main>
-    </div>
+    </DashboardLayout>
   );
 }

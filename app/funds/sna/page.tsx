@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import Sidebar from '@/components/sidebar';
+import DashboardLayout from '@/components/dashboard-layout';
 import { 
   ftoRecords, 
   bankTransactions, 
@@ -174,12 +174,9 @@ export default function SNAReconciliationPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F5F7FA]">
-      <Sidebar />
-      
-      <main className="flex-1 overflow-auto">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-8 py-6">
+    <DashboardLayout>
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-8 py-6">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-3xl font-bold text-[#2C3E50]">SNA Fund Reconciliation</h1>
@@ -440,7 +437,6 @@ export default function SNAReconciliationPage() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </DashboardLayout>
   );
 }

@@ -1,55 +1,24 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
-import { Onest } from "next/font/google";
-
-const onest = Onest({ 
-  subsets: ["latin"], 
-  variable: "--font-onest" 
-})
+import './globals.css';
+import type { Metadata } from 'next';
+import { AuthProvider } from '@/components/auth-provider';
 
 export const metadata: Metadata = {
-  title: "Sahay - Access Government Welfare Schemes Effortlessly",
-  description:
-    "A unified portal for citizens, organizations, and administrators to manage documents, verify identities, and apply for welfare schemes securely.",
-  generator: "v0.app",
-  icons: {
-    icon: [
-      {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
-      },
-    ],
-    apple: "/apple-icon.png",
-  },
-}
+  title: 'सहाय - Sahay App',
+  description: 'Fund management and tracking system',
+};
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className={`${onest.variable} antialiased`}>
-        {children}
-        <Analytics />
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
-  )
+  );
 }

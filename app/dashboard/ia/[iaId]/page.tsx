@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useParams } from 'next/navigation';
-import Sidebar from '@/components/sidebar';
+import DashboardLayout from '@/components/dashboard-layout';
 import KPICard from '@/components/kpi-card';
 import MilestoneTracker from '@/components/milestone-tracker';
 import EvidenceRepository from '@/components/evidence-repository';
@@ -50,12 +50,9 @@ export default function IADashboard() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F5F7FA]">
-      <Sidebar />
-      
-      <main className="flex-1 overflow-auto">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-8 py-6">
+    <DashboardLayout>
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-8 py-6">
           <div className="flex items-start justify-between">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">{data.project.iaName}</h1>
@@ -225,7 +222,6 @@ export default function IADashboard() {
             )}
           </div>
         </div>
-      </main>
 
       {/* Modals */}
       <UploadDocumentModal
@@ -233,6 +229,6 @@ export default function IADashboard() {
         onClose={() => setShowUploadModal(false)}
         onUpload={handleFileUpload}
       />
-    </div>
+    </DashboardLayout>
   );
 }

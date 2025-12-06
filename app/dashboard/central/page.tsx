@@ -4,7 +4,7 @@ import Sidebar from "@/components/sidebar";
 import IndiaMapHeatmap from "@/components/india-map-heatmap";
 import TimeSeriesChart from "@/components/time-series-chart";
 import DonutChart from "@/components/donut-chart";
-
+import DashboardLayout from "@/components/dashboard-layout";
 
 export default function CentralDashboard() {
   const [dateRange, setDateRange] = useState("Last 30 Days");
@@ -13,9 +13,7 @@ export default function CentralDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="flex min-h-screen bg-[#F5F7FA]">
-      <Sidebar />
-      
+    <DashboardLayout>
       {/* Main Content */}
       <main className="flex-1 overflow-auto">
         {/* Header */}
@@ -630,6 +628,6 @@ export default function CentralDashboard() {
           </div>
         </div>
       </main>
-    </div>
+    </DashboardLayout>
   );
 }

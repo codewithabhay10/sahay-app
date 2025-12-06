@@ -5,6 +5,7 @@ import Sidebar from '@/components/sidebar';
 import ReleaseFundsModal from '@/components/release-funds-modal';
 import { fundQueueProposals, filterProposals } from '@/lib/fund-queue-mock-data';
 import { FundProposal, PACCDecision, UCStatus, ProposalStatus } from '@/lib/types';
+import DashboardLayout from '@/components/dashboard-layout';
 
 export default function FundQueuePage() {
   const [selectedProposalIds, setSelectedProposalIds] = useState<string[]>([]);
@@ -121,8 +122,7 @@ export default function FundQueuePage() {
   }, 0);
 
   return (
-    <div className="flex min-h-screen bg-[#F5F7FA]">
-      <Sidebar />
+    <DashboardLayout>
       
       <main className="flex-1 overflow-auto">
         {/* Header */}
@@ -345,6 +345,6 @@ export default function FundQueuePage() {
         proposals={proposalsToRelease}
         onConfirm={handleConfirmRelease}
       />
-    </div>
+    </DashboardLayout>
   );
 }
