@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/dashboard-layout';
 import { Proposal, getProposals, getStates, getCategories, getStatuses } from '@/lib/proposals-mock-data';
 
 export default function ProposalsPage() {
+  const router = useRouter();
   const [proposals] = useState<Proposal[]>(getProposals());
   const [selectedProposals, setSelectedProposals] = useState<string[]>([]);
   const [filterState, setFilterState] = useState<string>('All States');
@@ -285,8 +287,9 @@ export default function ProposalsPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button
+                          onClick={() => router.push(`/proposals/${proposal.id}`)}
                           className="p-1.5 hover:bg-gray-100 rounded transition-colors"
-                          title="View"
+                          title="View Details"
                         >
                           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-gray-600">
                             <path d="M1 9C1 9 4 3 9 3C14 3 17 9 17 9C17 9 14 15 9 15C4 15 1 9 1 9Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
