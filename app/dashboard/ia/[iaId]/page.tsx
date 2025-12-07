@@ -1,12 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import DashboardLayout from '@/components/dashboard-layout';
-import KPICard from '@/components/kpi-card';
-import MilestoneTracker from '@/components/milestone-tracker';
-import EvidenceRepository from '@/components/evidence-repository';
-import BeneficiaryTable from '@/components/beneficiary-table';
 import UploadDocumentModal from '@/components/upload-document-modal';
 import { getIAData, filterBeneficiaries } from '@/lib/ia-mock-data';
 import { EvidenceCategory } from '@/lib/types';
@@ -21,7 +17,7 @@ export default function IADashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [placementFilter, setPlacementFilter] = useState('All Placement Status');
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [selectedMilestone, setSelectedMilestone] = useState<string | null>(null);
+  const [] = useState<string | null>(null);
 
   // Filter beneficiaries
   const filteredBeneficiaries = useMemo(() => {
@@ -29,16 +25,7 @@ export default function IADashboard() {
   }, [data.beneficiaries, searchQuery, placementFilter]);
 
   // Handlers
-  const handleMarkComplete = (milestoneId: string) => {
-    console.log('Mark complete:', milestoneId);
-    // In real app, would call API
-  };
 
-  const handleAddRemark = (milestoneId: string) => {
-    console.log('Add remark:', milestoneId);
-    setSelectedMilestone(milestoneId);
-    // Show remark modal
-  };
 
   const handleUploadEvidence = () => {
     setShowUploadModal(true);
@@ -206,7 +193,7 @@ export default function IADashboard() {
                 {/* Completed Milestone 1 */}
                 <div>
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1">
+                    <div className="shrink-0 mt-1">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-green-600">
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="m9 12 2 2 4-4"></path>
@@ -229,7 +216,7 @@ export default function IADashboard() {
                 {/* Completed Milestone 2 */}
                 <div>
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1">
+                    <div className="shrink-0 mt-1">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-green-600">
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="m9 12 2 2 4-4"></path>
@@ -249,7 +236,7 @@ export default function IADashboard() {
                 {/* In Progress Milestone */}
                 <div>
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1">
+                    <div className="shrink-0 mt-1">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-orange-600">
                         <path d="M12 6v6l4 2"></path>
                         <circle cx="12" cy="12" r="10"></circle>
@@ -281,7 +268,7 @@ export default function IADashboard() {
                 {/* Pending Milestones */}
                 <div>
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1">
+                    <div className="shrink-0 mt-1">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-gray-300">
                         <circle cx="12" cy="12" r="10"></circle>
                       </svg>
@@ -298,7 +285,7 @@ export default function IADashboard() {
 
                 <div>
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1">
+                    <div className="shrink-0 mt-1">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-gray-300">
                         <circle cx="12" cy="12" r="10"></circle>
                       </svg>
@@ -566,7 +553,6 @@ export default function IADashboard() {
                   <tr>
                     <th className="px-5 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Beneficiary</th>
                     <th className="px-5 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Contact</th>
-                    <th className="px-5 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">District</th>
                     <th className="px-5 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Training</th>
                     <th className="px-5 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Placement</th>
                     <th className="px-5 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Disbursed</th>
@@ -587,7 +573,6 @@ export default function IADashboard() {
                         <p className="text-sm text-gray-900">{beneficiary.mobile}</p>
                         <p className="text-xs text-gray-500">Reg: {beneficiary.registrationDate}</p>
                       </td>
-                      <td className="px-5 py-4 text-sm text-gray-900">{beneficiary.district}</td>
                       <td className="px-5 py-4">
                         <span className={`px-2 py-1 rounded text-xs capitalize ${beneficiary.trainingStatus === 'completed' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
                           {beneficiary.trainingStatus}

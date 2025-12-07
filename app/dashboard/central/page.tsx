@@ -531,12 +531,12 @@ export default function CentralDashboard() {
                   </Link>
                   <Link href="/funds/queue">
                     <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors" style={{ marginBottom: '1rem' }}>
-                      Generate Report
+                      Generate National Report
                     </button>
                   </Link>
                   <Link href="/funds/queue">
                     <button className="w-full px-4 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors" style={{ marginBottom: '1rem' }}>
-                      View All Projects
+                      Issue Circular
                     </button>
                   </Link>
                 </div>

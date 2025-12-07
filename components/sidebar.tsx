@@ -64,6 +64,18 @@ export default function Sidebar() {
           ),
           href: "/funds/queue",
         },
+        {
+          title: "PFMS Monitor",
+          icon: (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M3.33333 7.5C4.90416 5.83333 6.97133 4.91435 9.16824 4.91435C11.3652 4.91435 13.4323 5.83333 15.0032 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M5.83333 10C6.90416 8.88889 8.42412 8.25291 10 8.25291C11.5759 8.25291 13.0958 8.88889 14.1667 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M8.33333 12.5C8.97569 11.9444 9.77106 11.6667 10.5664 11.6667C11.3618 11.6667 12.1571 11.9444 12.7995 12.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="10" cy="15" r="1.25" fill="currentColor" />
+            </svg>
+          ),
+          href: "/integrations/pfms",
+        },
       ],
       state: [
         {
@@ -231,7 +243,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="flex items-center px-6 py-5 border-b border-gray-200">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="w-8 h-8 bg-[#EA9000] rounded-lg flex items-center justify-center flex-shrink-0">
+          <div className="w-8 h-8 bg-[#EA9000] rounded-lg flex items-center justify-center shrink-0">
             <span className="text-white font-bold text-sm">स</span>
           </div>
           {isHovered && (
@@ -275,7 +287,7 @@ export default function Sidebar() {
       {user && (
         <div className="border-t border-gray-200 p-4">
           <div className={`flex items-center gap-3 mb-3 ${!isHovered ? "justify-center" : ""}`}>
-            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center shrink-0">
               <span className="text-gray-600 font-semibold text-sm">{user.name.charAt(0)}</span>
             </div>
             {isHovered && (
