@@ -15,7 +15,6 @@ export default function FundQueuePage() {
   // Filters
   const [stateFilter, setStateFilter] = useState('All States');
   const [paccFilter, setPaccFilter] = useState('All Decisions');
-  const [ucFilter, setUcFilter] = useState('All UC Status');
   const [statusFilter, setStatusFilter] = useState('All Status');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -24,11 +23,10 @@ export default function FundQueuePage() {
     return filterProposals(fundQueueProposals, {
       state: stateFilter,
       paccDecision: paccFilter === 'All Decisions' ? undefined : paccFilter,
-      ucStatus: ucFilter === 'All UC Status' ? undefined : ucFilter,
       status: statusFilter === 'All Status' ? undefined : statusFilter,
       search: searchQuery
     });
-  }, [stateFilter, paccFilter, ucFilter, statusFilter, searchQuery]);
+  }, [stateFilter, paccFilter, statusFilter, searchQuery]);
 
   const handleRelease = (proposal: FundProposal) => {
     setProposalToRelease(proposal);
@@ -121,14 +119,6 @@ export default function FundQueuePage() {
               <option value="conditionally-approved">Conditional</option>
               <option value="pending">Pending</option>
             </select>
-            
-            <select value={ucFilter} onChange={(e) => setUcFilter(e.target.value)} className="px-3 py-2 border border-gray-300 rounded-lg text-sm">
-              <option>All UC Status</option>
-              <option value="approved">Approved</option>
-              <option value="submitted">Submitted</option>
-              <option value="pending">Pending</option>
-              <option value="overdue">Overdue</option>
-            </select>
 
             <input
               type="text"
@@ -152,7 +142,6 @@ export default function FundQueuePage() {
                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">State</th>
                     <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Amount</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">PACC</th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">UC Status</th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
                     <th className="px-4 py-3 text-center text-xs font-semibold text-gray-600 uppercase">Actions</th>
                   </tr>
@@ -171,7 +160,6 @@ export default function FundQueuePage() {
                       <td className="px-4 py-4 text-sm text-gray-900">{proposal.stateName}</td>
                       <td className="px-4 py-4 text-right font-semibold text-gray-900">₹{proposal.amountRequested.toFixed(2)} Cr</td>
                       <td className="px-4 py-4">{getPACCBadge(proposal.paccDecision)}</td>
-                      <td className="px-4 py-4">{getUCBadge(proposal.ucStatus)}</td>
                       <td className="px-4 py-4">{getStatusBadge(proposal.status)}</td>
                       <td className="px-4 py-4">
                         <div className="flex items-center justify-center gap-2">
@@ -184,12 +172,6 @@ export default function FundQueuePage() {
                             className="px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Release
-                          </button>
-                          <button className="px-3 py-1.5 border border-red-600 text-red-600 text-xs font-medium rounded hover:bg-red-50 transition-colors">
-                            Reject
-                          </button>
-                          <button className="px-3 py-1.5 border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-50 transition-colors">
-                            Hold
                           </button>
                         </div>
                       </td>

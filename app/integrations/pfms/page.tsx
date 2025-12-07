@@ -595,7 +595,16 @@ export default function PFMSMonitorPage() {
                 </div>
               </div>
 
-              <div className="mt-6 flex justify-end">
+              <div className="mt-6 flex justify-end gap-3">
+                <button
+                  onClick={() => {
+                    const ftoNumber = selectedReceipt.ftoNumber;
+                    window.open(`/payments/fto?id=${ftoNumber}`, '_blank');
+                  }}
+                  className="px-4 py-2 text-sm font-semibold text-orange-600 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors"
+                >
+                  View FTO
+                </button>
                 <button
                   onClick={() => setSelectedReceipt(null)}
                   className="px-4 py-2 text-sm font-semibold text-white bg-[#EA9000] hover:bg-[#d88000] rounded-lg"
