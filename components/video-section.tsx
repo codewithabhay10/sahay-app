@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX, Maximize } from "lucide-react";
-import { getTranslation } from "@/lib/translations";
+
 
 export default function VideoSection() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -167,7 +167,6 @@ export default function VideoSection() {
             className="text-sm"
             style={{ color: "rgb(94, 64, 0)", opacity: 0.8 }}
           >
-            {getTranslation(language, 'video.caption')}
           </p>
         </div>
       </div>
